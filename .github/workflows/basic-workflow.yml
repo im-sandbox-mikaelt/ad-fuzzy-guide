@@ -39,6 +39,7 @@ jobs:
 
   deployment:
     runs-on: windows-latest
+    needs: [build]
     steps:
         # ...deployment-specific steps
       - name: Run only if a PR is open
