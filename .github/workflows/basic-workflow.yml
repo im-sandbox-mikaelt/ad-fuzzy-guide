@@ -39,10 +39,24 @@ jobs:
 
   deployment:
     runs-on: windows-latest
-    environment: DEV
     steps:
         # ...deployment-specific steps
       - name: Run only if a PR is open
         if: ${{ github.event_name == 'pull_request' }}
         run: echo Hello, from the PR!!!!
 
+      - uses: actions/checkout@v4
+        with:
+          repository: im-sandbox-mikaelt/ad-composite-action
+          path: ./.github/actions/ad-composite-action
+          token: ${{ secrets.GH_TOKEN2 }}
+      
+      - id: foo
+        uses: ./.github/actions/ad-composite-action
+        with:
+          who-to-greet: 'Mona the Octocat with AD'
+
+      - run: echo random number "$RANDOM_NUMBER"
+        shell: bash
+        env:
+          RANDOM_NUMBER: ${{ steps.foo.outputs.random-number }}
